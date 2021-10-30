@@ -1,14 +1,11 @@
 public class ShengxiaoPiece implements Piece {
 
-    private String[] shengxiao = new String[]{
+    private final String[] shengxiao = new String[]{
             "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
 
     private int index = -1;
 
     private boolean isNew = true;
-
-    private int cycle = 0;
-
 
     @Override
     public String toString() {
@@ -17,20 +14,16 @@ public class ShengxiaoPiece implements Piece {
         }
         if (isNew) {
             isNew = false;
-            return "*" + shengxiao[index];
+            return "*" + shengxiao[index % shengxiao.length];
         } else {
-            return "" + shengxiao[index];
+            return "" + shengxiao[index % shengxiao.length];
         }
     }
 
     @Override
     public int expand() {
         index++;
-        if (index > 11) {
-            index = 0;
-            cycle++;
-        }
-        return cycle * 12 + index;
+        return (int) Math.pow(2, index);
     }
 
     @Override
@@ -39,7 +32,7 @@ public class ShengxiaoPiece implements Piece {
             return true;
         }
         ShengxiaoPiece b = (ShengxiaoPiece) obj;
-        return this.index == b.index;
+        return this.index % shengxiao.length == b.index % shengxiao.length;
     }
 
     @Override
