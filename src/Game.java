@@ -22,7 +22,7 @@ public class Game {
      * @return 新的空棋子
      */
     public static Piece giveAPiece() {
-//        return new NumPiece();
+        // return new NumPiece();
         return new ShengxiaoPiece();
     }
 
@@ -98,6 +98,8 @@ public class Game {
             isChange = false;
             System.out.println("当前得分为：" + score);
         }
+
+        scanner.close();
     }
 
     /**
@@ -174,9 +176,7 @@ public class Game {
     }
 
     /**
-     * 若棋盘没有空位，且当前没有合并可能，则游戏结束
-     * 若上一操作没有改变棋盘，则不生成新棋子
-     * 若棋盘有空位则随机在一个空位生成一个新的棋子
+     * 若棋盘没有空位，且当前没有合并可能，则游戏结束 若上一操作没有改变棋盘，则不生成新棋子 若棋盘有空位则随机在一个空位生成一个新的棋子
      */
     public void randomOnePiece() {
 
