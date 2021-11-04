@@ -13,5 +13,8 @@ public interface Piece {
 
     void setBlank();
 
+    /**
+     * 初始化棋子为最小棋子
+     */
     void init();
 }

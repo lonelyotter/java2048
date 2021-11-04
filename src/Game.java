@@ -9,12 +9,18 @@ public class Game {
     Piece[][] board;
     Random random = new Random();
     boolean isOver = false;
+    boolean isChange = true;
 
     public Game(int size) {
         this.size = size;
         board = new Piece[size][size];
     }
 
+    /**
+     * 返回一个新的空棋子
+     *
+     * @return 新的空棋子
+     */
     public static Piece giveAPiece() {
 //        return new NumPiece();
         return new ShengxiaoPiece();
@@ -32,6 +38,7 @@ public class Game {
         compressRow(pieces);
         for (int i = 0; i < pieces.length - 1; i++) {
             if (!pieces[i].isBlank() && pieces[i].equals(pieces[i + 1])) {
+                isChange = true;
                 score += pieces[i].expand();
                 pieces[i + 1].setBlank();
                 compressRow(pieces);
@@ -41,9 +48,15 @@ public class Game {
 
     public void compressRow(Piece[] pieces) {
         ArrayList<Piece> temp = new ArrayList<>();
-        for (int i = 0; i < pieces.length; i++) {
-            if (!pieces[i].isBlank()) {
-                temp.add(pieces[i]);
+
+        for (int i = 0; i < pieces.length - 1; i++) {
+            if (pieces[i].isBlank() && !pieces[i + 1].isBlank()) {
+                isChange = true;
+            }
+        }
+        for (Piece piece : pieces) {
+            if (!piece.isBlank()) {
+                temp.add(piece);
             }
         }
 
@@ -79,9 +92,10 @@ public class Game {
                 System.out.println("输入不合法");
                 key = scanner.next();
             }
-            System.out.println(key);
             directionMerge(key);
+
             randomOnePiece();
+            isChange = false;
             System.out.println("当前得分为：" + score);
         }
     }
@@ -160,8 +174,9 @@ public class Game {
     }
 
     /**
-     * 若棋盘有空位则随机在一个空位生成一个新的棋子
      * 若棋盘没有空位，且当前没有合并可能，则游戏结束
+     * 若上一操作没有改变棋盘，则不生成新棋子
+     * 若棋盘有空位则随机在一个空位生成一个新的棋子
      */
     public void randomOnePiece() {
 
@@ -179,6 +194,8 @@ public class Game {
             if (!canMerge()) {
                 this.over();
             }
+        } else if (!isChange) {
+            return;
         } else {
             int i = random.nextInt(pieces.size());
             Piece piece = pieces.get(i);
